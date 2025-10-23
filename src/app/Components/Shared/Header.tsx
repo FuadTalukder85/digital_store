@@ -27,7 +27,7 @@ const Header = () => {
         </div>
         <div>
           <Link href="/Register">
-            <button className="border border-secondary px-5 py-2 font-semibold rounded-md hover:bg-secondary transition-all duration-300 cursor-pointer hover:text-primary">
+            <button className="bg-secondary text-primary px-5 py-2 font-semibold rounded-md hover:bg-[#0F494D] transition-all duration-300 hover:text-white cursor-pointer">
               Log in
             </button>
           </Link>
