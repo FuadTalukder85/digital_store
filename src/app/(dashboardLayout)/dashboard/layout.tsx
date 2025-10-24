@@ -1,6 +1,7 @@
+import { TLayoutProps } from "@/Types/Types";
 import React from "react";
 
-const layout = ({ children }) => {
+const layout: React.FC<TLayoutProps> = ({ children }) => {
   return <div>{children}</div>;
 };
 

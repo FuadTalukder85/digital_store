@@ -1,12 +1,15 @@
+import { TInputTypes } from "@/Types/Types";
+import { FieldError } from "react-hook-form";
+
 export default function Input({
   label,
   required,
-  type = "text",
+  type,
   placeholder,
   defaultValue,
   register,
   error,
-}) {
+}: TInputTypes) {
   return (
     <div className="form-control w-full">
       <label className="label">
@@ -21,7 +24,9 @@ export default function Input({
         {...register}
         className="w-full py-2 px-3 rounded-sm bg-[#00ccff17] border border-white"
       />
-      {error && <small className="text-red-500">{error.message}</small>}
+      {error && (
+        <small className="text-red-500">{(error as FieldError)?.message}</small>
+      )}
     </div>
   );
 }
