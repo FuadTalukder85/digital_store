@@ -1,14 +1,39 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import logo from "../../../../public/digital_store_white.png";
 import Image from "next/image";
 import Link from "next/link";
+import { useAppDispatch, useAppSelector } from "@/Redux/hook";
+import { logout, useCurrentUser } from "@/Redux/auth/authSlice";
+import { useRouter } from "next/navigation";
 
 const Header = () => {
+  const user = useAppSelector(useCurrentUser);
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
   const menu = [
     { name: "Home", path: "/" },
     { name: "Shop", path: "/Shop" },
     { name: "About Us", path: "/AboutUs" },
   ];
+  // handle logout
+  const handleLogout = () => {
+    dispatch(logout());
+    localStorage.removeItem("token");
+    router.push("/");
+  };
+  if (!isMounted) {
+    return (
+      <div className="bg-primary h-16 w-full flex items-center justify-center text-gray-300">
+        <Image src={logo} alt="logo" height={120} width={120} />
+      </div>
+    );
+  }
 
   return (
     <div className="bg-primary">
@@ -26,11 +51,18 @@ const Header = () => {
           </ul>
         </div>
         <div>
-          <Link href="/Register">
-            <button className="bg-secondary text-primary px-5 py-2 font-semibold rounded-md hover:bg-[#0F494D] transition-all duration-300 hover:text-white cursor-pointer">
-              Log in
+          {user ? (
+            <button
+              onClick={handleLogout}
+              className="bg-secondary text-primary px-5 py-2 font-semibold rounded-md hover:bg-[#0F494D] transition-all duration-300 hover:text-white cursor-pointer"
+            >
+              Logout
             </button>
-          </Link>
+          ) : (
+            <button className="bg-secondary text-primary px-5 py-2 font-semibold rounded-md hover:bg-[#0F494D] transition-all duration-300 hover:text-white cursor-pointer">
+              <Link href="/Login">Log in</Link>
+            </button>
+          )}
         </div>
       </div>
     </div>
