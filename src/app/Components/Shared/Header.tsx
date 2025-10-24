@@ -18,7 +18,7 @@ const Header = () => {
   }, []);
   const menu = [
     { name: "Home", path: "/" },
-    { name: "Shop", path: "/Shop" },
+    { name: "Product", path: "/Product" },
     { name: "About Us", path: "/AboutUs" },
   ];
   // handle logout
