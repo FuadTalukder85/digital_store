@@ -10,8 +10,6 @@ import { RiAccountCircleLine } from "react-icons/ri";
 
 const Header = () => {
   const user = useAppSelector(useCurrentUser);
-  const dispatch = useAppDispatch();
-  const router = useRouter();
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -22,12 +20,7 @@ const Header = () => {
     { name: "Product", path: "/Product" },
     { name: "About Us", path: "/AboutUs" },
   ];
-  // handle logout
-  const handleLogout = () => {
-    dispatch(logout());
-    localStorage.removeItem("token");
-    router.push("/");
-  };
+
   if (!isMounted) {
     return (
       <div className="bg-primary h-16 w-full flex items-center justify-center text-gray-300">
@@ -53,20 +46,13 @@ const Header = () => {
         </div>
         <div>
           {user ? (
-            <button
-              onClick={handleLogout}
-              className="bg-white text-primary p-1 font-semibold rounded-md hover:bg-[#0F494D] transition-all duration-300 hover:text-white cursor-pointer"
-            >
-              <RiAccountCircleLine className="text-2xl" />
+            <button className="bg-white text-primary p-1 font-semibold rounded-md hover:bg-[#0F494D] transition-all duration-300 hover:text-white cursor-pointer">
+              <Link href="/Account">
+                <RiAccountCircleLine className="text-2xl" />
+              </Link>
             </button>
           ) : (
-            // <button
-            //   onClick={handleLogout}
-            //   className="bg-secondary text-primary px-5 py-2 font-semibold rounded-md hover:bg-[#0F494D] transition-all duration-300 hover:text-white cursor-pointer"
-            // >
-            //   Logout
-            // </button>
-            <button className="bg-secondary text-primary px-5 py-2 font-semibold rounded-md hover:bg-[#0F494D] transition-all duration-300 hover:text-white cursor-pointer">
+            <button className="bg-[#e8f5e9] text-primary px-5 py-2 font-semibold rounded-md hover:bg-[#0F494D] transition-all duration-300 hover:text-white cursor-pointer">
               <Link href="/Login">Log in</Link>
             </button>
           )}

@@ -17,7 +17,7 @@ const Card: React.FC<TCardTypes> = ({ img, title, price, discount }) => {
         <p className="text-primary font-semibold text-xl pr-16">{title}</p>
         <div className="flex gap-3 text-lg font-semibold">
           <p className="text-gray-500">${price}.00</p>
-          <p className="text-secondary line-through">${discount}.00</p>
+          <p className="text-primary line-through">${discount}.00</p>
         </div>
       </div>
     </div>

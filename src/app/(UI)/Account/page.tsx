@@ -3,22 +3,65 @@ import Image from "next/image";
 import React from "react";
 import demoPro from "../../../../public/demoPro.jpg";
 import { FaCreativeCommonsShare } from "react-icons/fa";
+import { useAppDispatch, useAppSelector } from "@/Redux/hook";
+import { logout, useCurrentUser } from "@/Redux/auth/authSlice";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import dynamic from "next/dynamic";
+import { useGetUsersQuery } from "@/Redux/auth/authApi";
+import { TUserTypes } from "@/Types/Types";
 
 const Account = () => {
+  const user = useAppSelector(useCurrentUser) as TUserTypes;
+  const { data, isLoading } = useGetUsersQuery("");
+  const matchUser = data?.find((dt: TUserTypes) => dt?.email === user?.email);
+  console.log("matchUser", matchUser);
+  console.log("user acc", data);
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  // handle logout
+  const handleLogout = () => {
+    dispatch(logout());
+    localStorage.removeItem("token");
+    router.push("/");
+  };
+  // handle referral link copy
+  const handleCopyReferral = async () => {
+    if (!user?.referralCode) {
+      toast.error("Referral code not found!");
+      return;
+    }
+
+    const baseUrl = typeof window !== "undefined" ? window.location.origin : "";
+    const referralUrl = `${baseUrl}/Register?r=${user.referralCode}`;
+    try {
+      await navigator.clipboard.writeText(referralUrl);
+      toast.success("Referral link copied to clipboard!");
+    } catch (error) {
+      console.error("Copy failed:", error);
+      toast.error("Failed to copy referral link!");
+    }
+  };
+  if (isLoading) {
+    return <div className="text-center">Loading...</div>;
+  }
   return (
-    <div className="min-h-screen bg-[#e8f5e9] py-12">
-      <div className="max-w-7xl mx-auto px-6">
+    <div className="min-h-screen bg-secondary py-12">
+      <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="bg-white shadow-md border border-gray-200 px-6 py-4 rounded-t-2xl flex items-center justify-between">
           <p className="text-gray-700 text-lg font-bold">My Account</p>
-          <button className="flex items-center gap-2 text-sm bg-primary text-white px-4 py-2 rounded-md hover:bg-[#e8f5e9] hover:text-gray-700 cursor-pointer transition-all duration-300">
+          <button
+            onClick={handleCopyReferral}
+            className="flex items-center gap-2 text-sm bg-primary text-white px-4 py-2 rounded-md hover:bg-secondary hover:text-gray-700 cursor-pointer transition-all duration-300"
+          >
             <FaCreativeCommonsShare className="text-lg" />
             Copy Referral Link
           </button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-12 bg-white shadow-md border border-gray-200 rounded-b-2xl overflow-hidden">
-          <div className="md:col-span-4 flex flex-col items-center justify-center p-8 border-r border-gray-100 bg-gray-50">
+          <div className="md:col-span-4 flex flex-col items-center justify-center p-8 border-r border-gray-100 bg-gray-100">
             <div className="">
               <Image
                 src={demoPro}
@@ -29,9 +72,9 @@ const Account = () => {
               />
             </div>
             <h2 className="mt-6 text-xl font-semibold text-gray-700">
-              Fuad Talukder
+              {user?.name} {user?.lastName}
             </h2>
-            <p className="text-gray-500 text-sm">talukder@gmail.com</p>
+            <p className="text-gray-500 text-sm">{user?.email}</p>
           </div>
 
           <div className="md:col-span-8 p-8 space-y-6 bg-white">
@@ -46,7 +89,7 @@ const Account = () => {
                   Referred Users
                 </p>
                 <p className="text-4xl font-bold text-blue-600 text-right">
-                  10
+                  {matchUser.referralPoints / 2}
                 </p>
               </div>
 
@@ -56,7 +99,7 @@ const Account = () => {
                   Users Who Purchased
                 </p>
                 <p className="text-4xl font-bold text-green-600 text-right">
-                  6
+                  {matchUser.credits / 2}
                 </p>
               </div>
 
@@ -66,7 +109,7 @@ const Account = () => {
                   Total Credits Earned
                 </p>
                 <p className="text-4xl font-bold text-yellow-600 text-right">
-                  20
+                  {matchUser.credits}
                 </p>
               </div>
             </div>
@@ -77,6 +120,14 @@ const Account = () => {
                 make their first purchase!
               </p>
             </div>
+            <div className="flex justify-end">
+              <button
+                onClick={handleLogout}
+                className="mt-6 bg-primary text-white px-5 py-2 font-semibold rounded-md hover:bg-secondary transition-all duration-300 hover:text-primary cursor-pointer"
+              >
+                Logout
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -84,4 +135,4 @@ const Account = () => {
   );
 };
 
-export default Account;
+export default dynamic(() => Promise.resolve(Account), { ssr: false });
