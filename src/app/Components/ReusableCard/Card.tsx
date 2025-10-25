@@ -20,12 +20,6 @@ const Card: React.FC<TCardTypes> = ({ img, title, price, discount }) => {
           <p className="text-secondary line-through">${discount}.00</p>
         </div>
       </div>
-      <button
-        type="submit"
-        className="bg-[#0f494d15] w-full text-primary px-5 py-2 font-semibold rounded-md hover:bg-[#0F494D] transition-all duration-300 hover:text-white cursor-pointer"
-      >
-        Buy Now
-      </button>
     </div>
   );
 };

@@ -21,6 +21,7 @@ export type TInputTypes = {
 };
 // card
 export type TCardTypes = {
+  _id?: string;
   img: string;
   title: string;
   price: number;
