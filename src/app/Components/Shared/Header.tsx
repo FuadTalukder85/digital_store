@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useAppDispatch, useAppSelector } from "@/Redux/hook";
 import { logout, useCurrentUser } from "@/Redux/auth/authSlice";
 import { useRouter } from "next/navigation";
+import { RiAccountCircleLine } from "react-icons/ri";
 
 const Header = () => {
   const user = useAppSelector(useCurrentUser);
@@ -54,11 +55,17 @@ const Header = () => {
           {user ? (
             <button
               onClick={handleLogout}
-              className="bg-secondary text-primary px-5 py-2 font-semibold rounded-md hover:bg-[#0F494D] transition-all duration-300 hover:text-white cursor-pointer"
+              className="bg-white text-primary p-1 font-semibold rounded-md hover:bg-[#0F494D] transition-all duration-300 hover:text-white cursor-pointer"
             >
-              Logout
+              <RiAccountCircleLine className="text-2xl" />
             </button>
           ) : (
+            // <button
+            //   onClick={handleLogout}
+            //   className="bg-secondary text-primary px-5 py-2 font-semibold rounded-md hover:bg-[#0F494D] transition-all duration-300 hover:text-white cursor-pointer"
+            // >
+            //   Logout
+            // </button>
             <button className="bg-secondary text-primary px-5 py-2 font-semibold rounded-md hover:bg-[#0F494D] transition-all duration-300 hover:text-white cursor-pointer">
               <Link href="/Login">Log in</Link>
             </button>

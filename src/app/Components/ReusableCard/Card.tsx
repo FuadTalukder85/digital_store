@@ -3,7 +3,7 @@ import Image from "next/image";
 const Card: React.FC<TCardTypes> = ({ img, title, price, discount }) => {
   return (
     <div className="">
-      <div className="bg-[#0f494d15] flex p-10 rounded-xl">
+      <div className="bg-[#e8f5e9] flex p-10 rounded-xl">
         <Image
           src={img}
           alt="cardImg"
