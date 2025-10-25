@@ -3,12 +3,13 @@ import React, { useEffect, useState } from "react";
 import logo from "../../../../public/digital_store_white.png";
 import Image from "next/image";
 import Link from "next/link";
-import { useAppDispatch, useAppSelector } from "@/Redux/hook";
-import { logout, useCurrentUser } from "@/Redux/auth/authSlice";
-import { useRouter } from "next/navigation";
+import { useAppSelector } from "@/Redux/hook";
+import { useCurrentUser } from "@/Redux/auth/authSlice";
+import { usePathname, useRouter } from "next/navigation";
 import { RiAccountCircleLine } from "react-icons/ri";
 
 const Header = () => {
+  const pathName = usePathname();
   const user = useAppSelector(useCurrentUser);
   const [isMounted, setIsMounted] = useState(false);
   const router = useRouter();
@@ -32,7 +33,24 @@ const Header = () => {
       </div>
     );
   }
-
+  const getDynamicLink = (path: string) => {
+    if (pathName === path) {
+      return "border-b";
+    }
+    // if (
+    //   pathName.startsWith("/Product") &&
+    //   (path === "/Product" || path === "/Product/[id]")
+    // ) {
+    //   return "text-seaBlue bg-white px-2 rounded-sm font-bold";
+    // }
+    // if (
+    //   pathName.startsWith("/AboutUs") &&
+    //   (path === "/AboutUs" || path === "/AboutUs/[id]")
+    // ) {
+    //   return "text-seaBlue bg-white px-2 rounded-sm font-bold";
+    // }
+    return "text-white";
+  };
   return (
     <div className="bg-primary">
       <div className="flex justify-between items-center max-w-7xl mx-auto py-1 text-gray-300">
@@ -43,7 +61,14 @@ const Header = () => {
           <ul className="flex gap-10 font-semibold">
             {menu?.map((dt, index) => (
               <li key={index}>
-                <Link href={dt.path}>{dt.name}</Link>
+                <Link
+                  href={dt.path}
+                  className={`transition-all duration-500 ${getDynamicLink(
+                    dt.path
+                  )}`}
+                >
+                  {dt.name}
+                </Link>
               </li>
             ))}
           </ul>
