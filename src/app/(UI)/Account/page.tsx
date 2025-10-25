@@ -89,7 +89,7 @@ const Account = () => {
                   Referred Users
                 </p>
                 <p className="text-4xl font-bold text-blue-600 text-right">
-                  {matchUser.referralPoints / 2}
+                  {matchUser?.referralPoints / 2}
                 </p>
               </div>
 
@@ -99,7 +99,7 @@ const Account = () => {
                   Users Who Purchased
                 </p>
                 <p className="text-4xl font-bold text-green-600 text-right">
-                  {matchUser.credits / 2}
+                  {matchUser?.credits / 2}
                 </p>
               </div>
 
@@ -109,7 +109,7 @@ const Account = () => {
                   Total Credits Earned
                 </p>
                 <p className="text-4xl font-bold text-yellow-600 text-right">
-                  {matchUser.credits}
+                  {matchUser?.credits}
                 </p>
               </div>
             </div>

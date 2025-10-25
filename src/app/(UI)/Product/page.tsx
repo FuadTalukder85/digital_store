@@ -63,7 +63,7 @@ const Product: React.FC = () => {
                 handleBuyNow(product._id as string, product.price as number)
               }
               disabled={isPurchasing}
-              className="bg-[#e8f5e9] w-full text-primary px-5 py-2 font-semibold rounded-md hover:bg-[#0F494D] transition-all duration-300 hover:text-white cursor-pointer disabled:opacity-50"
+              className="bg-[#e8f5e9] w-full text-primary px-5 py-2 font-semibold rounded-2xl hover:bg-[#0F494D] transition-all duration-300 hover:text-white cursor-pointer disabled:opacity-50"
             >
               {isPurchasing ? "Processing..." : "Buy Now"}
             </button>

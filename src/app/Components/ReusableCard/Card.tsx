@@ -2,14 +2,14 @@ import { TCardTypes } from "@/Types/Types";
 import Image from "next/image";
 const Card: React.FC<TCardTypes> = ({ img, title, price, discount }) => {
   return (
-    <div className="">
+    <div className="h-[500px]">
       <div className="bg-[#e8f5e9] flex p-10 rounded-xl">
         <Image
           src={img}
           alt="cardImg"
           width={200}
           height={200}
-          className="hover:scale-105 transition-all duration-700 ease-in-out"
+          className="h-[300px] hover:scale-105 transition-all duration-700 ease-in-out"
         ></Image>
       </div>
       <div className="py-5">

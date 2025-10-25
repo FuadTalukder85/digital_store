@@ -11,9 +11,13 @@ import { RiAccountCircleLine } from "react-icons/ri";
 const Header = () => {
   const user = useAppSelector(useCurrentUser);
   const [isMounted, setIsMounted] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     setIsMounted(true);
+    if (!user) {
+      router.push("/Login");
+    }
   }, []);
   const menu = [
     { name: "Home", path: "/" },
@@ -31,7 +35,7 @@ const Header = () => {
 
   return (
     <div className="bg-primary">
-      <div className="flex justify-between items-center max-w-7xl mx-auto py-2 text-gray-300">
+      <div className="flex justify-between items-center max-w-7xl mx-auto py-1 text-gray-300">
         <Link href="/">
           <Image src={logo} alt="logo" height={150} width={150}></Image>
         </Link>
