@@ -7,7 +7,7 @@ const authApi = BaseApi.injectEndpoints({
         data,
         referralCode,
       }: {
-        data: any;
+        data: unknown;
         referralCode?: string | null;
       }) => {
         const query = referralCode ? `?r=${referralCode}` : "";

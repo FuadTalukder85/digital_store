@@ -4,12 +4,13 @@ import loginImg from "../../../../public/loginImg.jpg";
 import Image from "next/image";
 import Input from "@/app/Components/ReusableForm/Input";
 import Link from "next/link";
-import { useForm } from "react-hook-form";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { useRegisterUsersMutation } from "@/Redux/auth/authApi";
 import toast from "react-hot-toast";
 import { setUser } from "@/Redux/auth/authSlice";
 import { useAppDispatch } from "@/Redux/hook";
 import { useSearchParams } from "next/navigation";
+import dynamic from "next/dynamic";
 
 const Register = () => {
   const searchParams = useSearchParams();
@@ -30,7 +31,7 @@ const Register = () => {
   const [registerUsers] = useRegisterUsersMutation();
   const dispatch = useAppDispatch();
 
-  const onSubmit = async (formData: any) => {
+  const onSubmit: SubmitHandler<FieldValues> = async (formData) => {
     try {
       const res = await registerUsers({
         data: formData,
@@ -39,9 +40,10 @@ const Register = () => {
       toast.success("Registration successful!");
       dispatch(setUser({ user: res.user, token: res.token }));
       reset();
-    } catch (error: any) {
-      console.error("Registration failed:", error);
-      toast.error(error?.data?.message || "Registration failed!");
+    } catch (error: unknown) {
+      const err = error as { data?: { message?: string } };
+      console.error("Registration failed:", err);
+      toast.error(err?.data?.message || "Registration failed!");
     }
   };
 
@@ -72,7 +74,7 @@ const Register = () => {
               </p>
               {referralCode && (
                 <div className="bg-green-600/20 border border-green-500 rounded-md px-3 py-2 mb-4 text-green-300">
-                  You’re joining via referral code:{" "}
+                  You,re joining via referral code:{" "}
                   <b className="text-white">{referralCode}</b>
                 </div>
               )}
@@ -101,6 +103,7 @@ const Register = () => {
               />
               <Input
                 label="Password"
+                type="number"
                 placeholder="Enter password"
                 register={register("password", {
                   required: "Password is required",
@@ -120,5 +123,4 @@ const Register = () => {
     </div>
   );
 };
-
-export default Register;
+export default dynamic(() => Promise.resolve(Register), { ssr: false });

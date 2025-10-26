@@ -12,7 +12,7 @@ export type TLayoutProps = {
 // user
 export type TUserTypes = {
   _id?: string;
-  name?: boolean;
+  name?: string;
   lastName?: string;
   email?: string;
   password?: string;
@@ -30,7 +30,7 @@ export type TInputTypes = {
   placeholder?: string;
   defaultValue?: string;
   register?: UseFormRegisterReturn;
-  error?: FieldError | Merge<FieldError, FieldErrorsImpl<any>> | undefined;
+  error?: FieldError | Merge<FieldError, FieldErrorsImpl> | undefined;
 };
 // card
 export type TCardTypes = {

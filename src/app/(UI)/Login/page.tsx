@@ -4,7 +4,7 @@ import loginImg from "../../../../public/loginImg.jpg";
 import Image from "next/image";
 import Input from "@/app/Components/ReusableForm/Input";
 import Link from "next/link";
-import { useForm } from "react-hook-form";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { useLoginUsersMutation } from "@/Redux/auth/authApi";
 import toast from "react-hot-toast";
 import { setUser } from "@/Redux/auth/authSlice";
@@ -21,10 +21,11 @@ const Login = () => {
   const router = useRouter();
   const [loginUsers] = useLoginUsersMutation();
   const dispatch = useAppDispatch();
-  const onSubmit = async (formData: any) => {
+
+  const onSubmit: SubmitHandler<FieldValues> = async (formData) => {
     try {
       const res = await loginUsers(formData).unwrap();
-      // console.log("Response from login:", res);
+
       if (res?.token && res?.user) {
         toast.success("Login successful!");
         dispatch(setUser({ user: res.user, token: res.token }));
@@ -33,12 +34,12 @@ const Login = () => {
       } else {
         toast.error("Invalid response from server");
       }
-    } catch (error: any) {
-      console.error("Login failed:", error);
-      toast.error(error?.data?.message || "Login failed!");
+    } catch (error: unknown) {
+      const err = error as { data?: { message?: string } };
+      console.error("Login failed:", err);
+      toast.error(err?.data?.message || "Login failed!");
     }
   };
-
   return (
     <div className="bg-[#00ccff17] min-h-screen flex items-center justify-center">
       <div className="max-w-6xl mx-auto py-16 px-6">
@@ -59,7 +60,7 @@ const Login = () => {
             <div className="w-full max-w-md">
               <p className="text-4xl font-bold">Please Login</p>
               <p className="my-4 text-gray-200">
-                Don't have an account?{" "}
+                Don,t have an account?{" "}
                 <Link href="/Register">
                   <span className="underline text-white">Register</span>
                 </Link>
@@ -74,6 +75,7 @@ const Login = () => {
               />
               <Input
                 label="Password"
+                type="number"
                 placeholder="Enter password"
                 register={register("password", {
                   required: "Password is required",

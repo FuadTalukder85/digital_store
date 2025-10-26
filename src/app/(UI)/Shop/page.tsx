@@ -30,7 +30,8 @@ const Product: React.FC = () => {
 
       toast.dismiss(loadingToast);
       toast.success(res.message || "Purchase successful!");
-    } catch (err: any) {
+    } catch (error: unknown) {
+      const err = error as { data?: { message?: string } };
       console.error("Purchase failed:", err);
       toast.dismiss();
       toast.error(err?.data?.message || "Something went wrong!");
@@ -69,7 +70,7 @@ const Product: React.FC = () => {
               viewport={{ once: true, amount: 0.3 }}
               whileHover={{ scale: 1.03 }}
               transition={{ type: "spring", stiffness: 120, damping: 15 }}
-              className="flex flex-col justify-between bg-white rounded-2xl shadow hover:shadow-xl border border-gray-100 transition-all duration-300"
+              className="flex flex-col justify-between bg-white rounded-2xl shadow hover:shadow-xl border border-gray-100 transition-all duration-300 p-2 md:p-0"
             >
               <Card
                 img={product.img}

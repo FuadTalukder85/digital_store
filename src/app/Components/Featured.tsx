@@ -32,7 +32,8 @@ const Featured: React.FC = () => {
 
       toast.dismiss(loadingToast);
       toast.success(res.message || "Purchase successful!");
-    } catch (err: any) {
+    } catch (error: unknown) {
+      const err = error as { data?: { message?: string } };
       console.error("Purchase failed:", err);
       toast.dismiss();
       toast.error(err?.data?.message || "Something went wrong!");
