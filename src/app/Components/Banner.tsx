@@ -20,13 +20,13 @@ const Banner = () => {
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between">
         {/* left content */}
         <motion.div
-          className="md:w-1/2"
+          className="md:w-1/2 p-2 md:p-2"
           initial={{ opacity: 0, x: -60 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
           viewport={{ once: true }}
         >
-          <p className="text-secondary capitalize text-lg font-semibold py-5">
+          <p className="mt-16 md:mt-0 text-secondary capitalize text-lg font-semibold py-5">
             editor choice best books
           </p>
           <h3 className="text-5xl md:text-7xl font-semibold">
@@ -40,11 +40,11 @@ const Banner = () => {
           </p>
 
           {/* Buttons */}
-          <div className="flex gap-5 mt-7">
+          <div className="flex justify-center md:justify-start gap-5 mt-7">
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Link href="/Product">
                 <button className="flex items-center gap-2 bg-[#e8f5e9] text-primary px-5 py-2 font-semibold rounded-2xl hover:bg-[#0F494D] transition-all duration-300 hover:text-white cursor-pointer">
-                  Buy Now <BsArrowRight className="text-2xl" />
+                  Buy Now <BsArrowRight className="text-2xl hidden md:block" />
                 </button>
               </Link>
             </motion.div>
@@ -52,7 +52,8 @@ const Banner = () => {
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Link href="/Product">
                 <button className="flex items-center gap-2 bg-primary text-secondary px-5 py-2 font-semibold rounded-2xl hover:bg-secondary transition-all duration-300 hover:text-primary cursor-pointer">
-                  View All Book <BsArrowRight className="text-2xl" />
+                  View All Book{" "}
+                  <BsArrowRight className="text-2xl hidden md:block" />
                 </button>
               </Link>
             </motion.div>

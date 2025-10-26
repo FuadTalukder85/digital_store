@@ -51,18 +51,18 @@ const Featured: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto py-16">
+    <div className="max-w-7xl mx-auto py-10 md:py-16 p-2 md:p-0">
       <motion.h3
         initial={{ opacity: 0, y: -20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
         viewport={{ once: true }}
-        className="text-4xl md:text-5xl font-bold tracking-tight text-primary pb-12"
+        className="text-4xl md:text-5xl font-bold tracking-tight text-primary md:pb-12"
       >
         Featured Books
       </motion.h3>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 pt-3 md:pt-0">
         {data?.map((product: Partial<TCardTypes>, index: number) => {
           if (
             !product?.img ||

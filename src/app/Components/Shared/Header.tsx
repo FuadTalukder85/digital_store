@@ -5,15 +5,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { useAppSelector } from "@/Redux/hook";
 import { useCurrentUser } from "@/Redux/auth/authSlice";
-import { usePathname, useRouter } from "next/navigation";
-import { RiAccountCircleLine } from "react-icons/ri";
-import { motion } from "framer-motion";
+import { usePathname } from "next/navigation";
+import { RiAccountCircleLine, RiMenu3Line, RiCloseLine } from "react-icons/ri";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Header = () => {
   const pathName = usePathname();
   const user = useAppSelector(useCurrentUser);
   const [isMounted, setIsMounted] = useState(false);
-  const router = useRouter();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
@@ -21,8 +21,9 @@ const Header = () => {
 
   const menu = [
     { name: "Home", path: "/" },
-    { name: "Product", path: "/Product" },
-    { name: "About Us", path: "/AboutUs" },
+    { name: "Shop", path: "/Shop" },
+    { name: "About", path: "/About" },
+    { name: "Contact", path: "/Contact" },
   ];
 
   const getDynamicLink = (path: string) =>
@@ -55,26 +56,25 @@ const Header = () => {
             <Image src={logo} alt="logo" height={150} width={150} />
           </motion.div>
         </Link>
-        {/* menu */}
-        <nav>
-          <ul className="hidden md:flex gap-10 font-semibold">
-            {menu.map((dt, index) => (
-              <motion.li key={index} whileHover={{ y: -2 }}>
-                <Link
-                  href={dt.path}
-                  className={`relative transition-all duration-300 ${getDynamicLink(
-                    dt.path
-                  )}`}
-                >
-                  {dt.name}
-                  <span className="absolute left-0 bottom-0 w-0 bg-secondary transition-all duration-300 group-hover:w-full"></span>
-                </Link>
-              </motion.li>
-            ))}
-          </ul>
+
+        {/* menu for desktop */}
+        <nav className="hidden md:flex gap-10 font-semibold uppercase">
+          {menu.map((dt, index) => (
+            <motion.li key={index} whileHover={{ y: -2 }} className="list-none">
+              <Link
+                href={dt.path}
+                className={`relative transition-all duration-300 ${getDynamicLink(
+                  dt.path
+                )}`}
+              >
+                {dt.name}
+              </Link>
+            </motion.li>
+          ))}
         </nav>
-        {/* account / login */}
-        <div>
+
+        {/* account/login for desktop */}
+        <div className="hidden md:block">
           {user ? (
             <motion.button
               whileHover={{ scale: 1.1 }}
@@ -95,7 +95,73 @@ const Header = () => {
             </motion.button>
           )}
         </div>
+
+        {/* mobile menu icon */}
+        <div className="md:hidden">
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="text-white text-3xl"
+          >
+            {menuOpen ? <RiCloseLine /> : <RiMenu3Line />}
+          </button>
+        </div>
       </div>
+
+      {/* Sidebar for mobile */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
+            transition={{ type: "tween", duration: 0.4 }}
+            className="fixed top-0 right-0 h-screen w-7/8 bg-primary text-secondary z-50 shadow-lg flex flex-col items-start md:hidden"
+          >
+            <div className="flex justify-end w-full items-center p-3">
+              <button
+                onClick={() => setMenuOpen(false)}
+                className="text-3xl text-secondary border border-secondary rounded-md"
+              >
+                <RiCloseLine />
+              </button>
+            </div>
+            <nav className="flex flex-col gap-6 p-3 text-lg font-semibold w-full bg-primary">
+              {menu.map((dt, index) => (
+                <Link
+                  key={index}
+                  href={dt.path}
+                  onClick={() => setMenuOpen(false)}
+                  className={`w-full block py-2 border-b border-gray-700 ${getDynamicLink(
+                    dt.path
+                  )}`}
+                >
+                  {dt.name}
+                </Link>
+              ))}
+            </nav>
+
+            <div className="mt-5 w-full">
+              {user ? (
+                <Link
+                  href="/Account"
+                  onClick={() => setMenuOpen(false)}
+                  className="flex items-center gap-2 text-secondary border border-gray-600 px-5 py-2 rounded-lg hover:bg-[#0F494D] transition-all duration-300"
+                >
+                  <RiAccountCircleLine className="text-2xl" /> Account
+                </Link>
+              ) : (
+                <Link
+                  href="/Login"
+                  onClick={() => setMenuOpen(false)}
+                  className="block text-center bg-[#e8f5e9] text-primary px-5 py-2 font-semibold rounded-lg hover:bg-[#0F494D] transition-all duration-300 hover:text-white"
+                >
+                  Log in
+                </Link>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.header>
   );
 };
